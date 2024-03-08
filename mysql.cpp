@@ -27,12 +27,23 @@ int main()
 	}
 
 	MYSQL_RES* res = mysql_store_result(conn);
-	while ((row = mysql_fetch_row(res)) != NULL) {
-		std::cout << "Column1: " << row[0] << ", Column2: " << row[1] << ", " << row[2] << ", " << row[3] << ", " << row[4] << ", " << row[5] << ", " << row[6]
-			<< ", " << row[7] << ", " << row[8] << ", " << row[9] << std::endl;
+	if (res)
+	{
+		int num_fields = mysql_num_fields(res);
+
+		while ((row = mysql_fetch_row(res)) != NULL) {
+			for (int i = 0; i < num_fields; i++)
+			{
+				std::cout << row[i] << "\t";
+			}
+			std::cout <<  "\n";
+		}
+		mysql_free_result(res);
+	}
+	else {
+		std::cerr << "获取结果集失败: " << mysql_error(conn) << std::endl;
 	}
 
-	mysql_free_result(res);
 	mysql_close(conn);
 	std::cin.get();
 	return 0;
