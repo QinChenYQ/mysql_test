@@ -45,6 +45,7 @@ int main()
 	}
 
 	mysql_close(conn);
+
 	std::cin.get();
 	return 0;
 }
